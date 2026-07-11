@@ -1,0 +1,35 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/game_world.gd" id="1"]
+[ext_resource type="Resource" path="res://resources/balance/world_balance.tres" id="2"]
+[ext_resource type="Resource" path="res://resources/balance/player_balance.tres" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/game/terrain.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://scenes/actors/player.tscn" id="5"]
+[ext_resource type="Script" path="res://scripts/core/game_camera.gd" id="6"]
+[ext_resource type="Script" path="res://scripts/ui/debug_overlay.gd" id="7"]
+
+[node name="World" type="Node2D"]
+script = ExtResource("1")
+world_balance = ExtResource("2")
+player_balance = ExtResource("3")
+
+[node name="Terrain" parent="." instance=ExtResource("4")]
+
+[node name="Player" parent="." instance=ExtResource("5")]
+
+[node name="GameCamera" type="Camera2D" parent="."]
+script = ExtResource("6")
+balance = ExtResource("3")
+
+[node name="DebugOverlay" type="CanvasLayer" parent="."]
+layer = 10
+script = ExtResource("7")
+
+[node name="Label" type="Label" parent="DebugOverlay"]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 560.0
+offset_bottom = 200.0
+theme_override_colors/font_color = Color(1, 0.8, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "debug"

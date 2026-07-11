@@ -7,6 +7,10 @@ var checks := 0
 var failures: Array[String] = []
 var current_test := ""
 
+## Set by the runner; lets tests add nodes under scene_tree.root when a
+## test subject needs to live in the tree (free them before returning).
+var scene_tree: SceneTree
+
 
 func fail_test(message: String) -> void:
 	failures.append("%s: %s" % [current_test, message])

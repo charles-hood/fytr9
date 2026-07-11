@@ -46,6 +46,70 @@ Movement actions use deadzone 0.25; button-like actions that also accept a
 trigger axis (fire, pulse_bomb) use 0.5. The user-configurable gamepad
 dead-zone option arrives in Milestone 5 (§8) and will feed these actions.
 
+## 2026-07-10 — Seam architecture: player-anchored continuous scene space
+
+§10.3 requires singular simulation entities, all wrapped math through
+RingWorld, and no physics-enabled seam duplicates. Implementation chosen:
+every entity keeps a normalized ring position (`sim_x` ∈ [0, W)); the
+player's node position is *continuous* (unwrapped) and anchors the scene;
+each physics tick GameWorld places every other entity at
+`player_scene_x + wrapped_delta_x(player.sim_x, entity.sim_x)`.
+
+Consequences:
+- Scene-space geometry is faithful within ±W/2 of the player, so rendering
+  and physics-adjacent interactions cross the seam with no proxy nodes, no
+  duplicate collisions, and no edge triggers — the cases §12's manual seam
+  checks worry about can't arise structurally.
+- Since W (3840) is 3 viewports, no entity can ever need to appear twice on
+  screen, so per-entity visual proxies (§10.3's fallback technique) are
+  unnecessary; terrain — the one object spanning the whole ring — is drawn
+  windowed by sampling the wrapped profile (TerrainView), which is the same
+  proxy idea expressed as sampling.
+- The anchor's continuous x is rebased by a whole number of laps once it
+  exceeds ±16 laps, shifting player and camera in the same tick (invisible,
+  float-precision-safe; verified by test).
+
+## 2026-07-10 — Player-shot hits: swept wrapped-math check
+
+§4.3 requires CCD "or an equivalent swept check". Player shots resolve hits
+via an explicit swept segment test in ring space each fixed step (start→end
+along flight direction, wrapped, against target radius). This is
+deterministic, headless-testable, and immune to seam/tunneling artifacts.
+The §10.5 collision layers are still configured on all Area2D actors —
+engine-side overlap (player hurtbox vs enemies etc.) arrives with the real
+roster in M2+.
+
+## 2026-07-10 — M1 terrain contact is a rebound clamp
+
+Lethal terrain collision (§4.2 Pilot/Ace) needs death/respawn flow, which is
+Milestone 3. Until then the flight lab clamps the player just above the
+surface (Cadet-style rebound) so terrain shape can be felt without a death
+loop. Revisit at M3.
+
+## 2026-07-10 — §4.2 values re-derived viewport-relative at 1280×720
+
+Per §4.2/M1, the inherited pixel values translate to, at 1280×720:
+- Screen-crossing time: 1280 / 400 = **3.2 s** at max speed.
+- World-lap time: 3840 / 400 = **9.6 s**.
+- Full reversal: brake phase 0.15 s + rebuild 0.45 s = **0.6 s** (in range).
+- Release coast from max: 400 / 500 = **0.8 s**.
+- Camera look-ahead: 0.22 × 1280 = **281.6 px**, velocity-scaled.
+- Arc Lance: 800 px/s crosses a screen in 1.6 s; closing speed over a
+  fleeing target is 400 px/s (§4.2's own watch item: only 2× player speed —
+  **watch in feel test**, bump projectile_speed if sluggish).
+These are structurally sound; final lock still requires the human feel pass
+(M1 exit criterion "enjoyable for five minutes"), which automation cannot
+provide.
+
+## 2026-07-10 — Test-runner readiness gotcha
+
+Nodes added to the tree during a SceneTree script's `_initialize` never
+receive NOTIFICATION_READY (no @onready wiring), and GDScript runtime
+errors abort a test method silently. The runner therefore (a) starts tests
+only after the first processed frame, (b) fails any test method that
+records zero assertions, and (c) run_checks.sh fails on any SCRIPT ERROR in
+test output even if the summary says PASS.
+
 ## 2026-07-10 — Placeholder pause behavior
 
 Until the real pause flow lands (Milestone 3), `pause` in the placeholder game

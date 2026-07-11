@@ -24,6 +24,18 @@ The authoritative implementation plan is [`fytr9-plan-v4.md`](fytr9-plan-v4.md).
 - `project/licenses/` — asset manifest and third-party notices
 - `run_checks.sh` — runs the full test suite plus a headless boot smoke test
 
+## Play it
+
+```bash
+godot --path project
+```
+
+Title screen → fire (Space/J/gamepad south) starts the Milestone 1 flight
+lab: fly with WASD/arrows or left stick, fire the Arc Lance, cross the seam,
+shoot the respawning target dummies. **F3** toggles the debug overlay
+(logical/normalized X, wrapped delta, velocity, FPS). Esc/P returns to the
+title.
+
 ## Verified CLI commands
 
 Verified against this exact build's `godot --help` output (per plan §12):

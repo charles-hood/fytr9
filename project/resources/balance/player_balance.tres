@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="PlayerBalance" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/player_balance.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+max_horizontal_speed = 400.0
+max_vertical_speed = 260.0
+time_to_max_speed = 0.45
+reversal_time = 0.6
+release_decel = 500.0
+fire_rate = 9.0
+projectile_speed = 800.0
+projectile_lifetime = 1.1
+muzzle_offset = 20.0
+camera_lookahead_fraction = 0.22
+camera_lookahead_response = 4.0
+respawn_invulnerability = 1.5
+hyperspace_invulnerability = 0.75

@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/actors/player_shot.gd" id="1"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bolt"]
+radius = 4.0
+
+[node name="PlayerShot" type="Area2D"]
+collision_layer = 2
+collision_mask = 4
+monitoring = false
+script = ExtResource("1")
+
+[node name="Glow" type="Polygon2D" parent="."]
+color = Color(0.533333, 1, 0.8, 0.6)
+polygon = PackedVector2Array(-12, -3, 12, -3, 12, 3, -12, 3)
+
+[node name="Core" type="Polygon2D" parent="."]
+color = Color(1, 1, 1, 1)
+polygon = PackedVector2Array(-10, -1.5, 10, -1.5, 10, 1.5, -10, 1.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_bolt")

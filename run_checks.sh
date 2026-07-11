@@ -9,8 +9,24 @@ echo "== engine =="
 "$GODOT_BIN" --version
 
 echo
+echo "== import (refresh caches) =="
+"$GODOT_BIN" --headless --path project --import >/dev/null 2>&1 || {
+	echo "import: FAILED"
+	exit 1
+}
+echo "import: OK"
+
+echo
 echo "== test suite =="
-"$GODOT_BIN" --headless --path project --script res://tests/test_runner.gd
+test_output="$("$GODOT_BIN" --headless --path project --script res://tests/test_runner.gd 2>&1)" || {
+	echo "$test_output"
+	exit 1
+}
+echo "$test_output"
+if grep -q "SCRIPT ERROR" <<<"$test_output"; then
+	echo "test suite: FAILED (script errors during tests — see above)"
+	exit 1
+fi
 
 echo
 echo "== boot smoke test =="
