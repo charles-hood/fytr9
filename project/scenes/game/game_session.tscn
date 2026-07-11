@@ -1,9 +1,57 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/core/game_session.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/game/world.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/game/hud.tscn" id="3"]
+[ext_resource type="Script" path="res://scripts/core/run_controller.gd" id="4"]
+[ext_resource type="Resource" path="res://resources/encounters/wave_slice.tres" id="5"]
+[ext_resource type="Resource" path="res://resources/balance/scoring_balance.tres" id="6"]
+[ext_resource type="Resource" path="res://resources/balance/settler_balance.tres" id="7"]
 
 [node name="GameSession" type="Node2D"]
 script = ExtResource("1")
 
 [node name="World" parent="." instance=ExtResource("2")]
+unique_name_in_owner = true
+
+[node name="HUD" parent="." instance=ExtResource("3")]
+unique_name_in_owner = true
+
+[node name="RunController" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4")
+wave_recipe = ExtResource("5")
+scoring_balance = ExtResource("6")
+settler_balance = ExtResource("7")
+
+[node name="RunEndOverlay" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+layer = 8
+visible = false
+
+[node name="Dim" type="ColorRect" parent="RunEndOverlay"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.55)
+
+[node name="ResultLabel" type="Label" parent="RunEndOverlay"]
+unique_name_in_owner = true
+offset_left = 240.0
+offset_top = 280.0
+offset_right = 1040.0
+offset_bottom = 340.0
+theme_override_font_sizes/font_size = 44
+text = "WAVE COMPLETE"
+horizontal_alignment = 1
+
+[node name="StatsLabel" type="Label" parent="RunEndOverlay"]
+unique_name_in_owner = true
+offset_left = 240.0
+offset_top = 360.0
+offset_right = 1040.0
+offset_bottom = 430.0
+theme_override_colors/font_color = Color(1, 0.8, 0, 1)
+theme_override_font_sizes/font_size = 18
+text = ""
+horizontal_alignment = 1

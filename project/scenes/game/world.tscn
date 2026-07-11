@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://scripts/core/game_world.gd" id="1"]
 [ext_resource type="Resource" path="res://resources/balance/world_balance.tres" id="2"]
@@ -7,11 +7,15 @@
 [ext_resource type="PackedScene" path="res://scenes/actors/player.tscn" id="5"]
 [ext_resource type="Script" path="res://scripts/core/game_camera.gd" id="6"]
 [ext_resource type="Script" path="res://scripts/ui/debug_overlay.gd" id="7"]
+[ext_resource type="Resource" path="res://resources/balance/settler_balance.tres" id="8"]
+[ext_resource type="Resource" path="res://resources/balance/enemies/snatcher_balance.tres" id="9"]
 
 [node name="World" type="Node2D"]
 script = ExtResource("1")
 world_balance = ExtResource("2")
 player_balance = ExtResource("3")
+settler_balance = ExtResource("8")
+snatcher_balance = ExtResource("9")
 
 [node name="Terrain" parent="." instance=ExtResource("4")]
 

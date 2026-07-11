@@ -23,9 +23,9 @@ func _process(_delta: float) -> void:
 	var player: CharacterBody2D = world.player
 	var ring: RingWorld = world.ring
 	var nearest_delta := INF
-	for dummy in world.targets:
-		if dummy.alive:
-			var d: float = ring.wrapped_delta_x(player.sim_x, dummy.sim_x)
+	for enemy in world.enemies:
+		if enemy.alive:
+			var d: float = ring.wrapped_delta_x(player.sim_x, enemy.sim_x)
 			if absf(d) < absf(nearest_delta):
 				nearest_delta = d
 	_label.text = "\n".join([
@@ -34,7 +34,7 @@ func _process(_delta: float) -> void:
 		"sim x (normalized)  %.1f / %.0f" % [player.sim_x, ring.width],
 		"velocity (%.0f, %.0f)  facing %d" % [player.velocity.x, player.velocity.y, player.facing],
 		"camera x %.1f" % world.camera.position.x,
-		"nearest dummy delta %.1f" % nearest_delta,
-		"shots %d  dummies alive %d" % [world.shots.size(),
-				world.targets.filter(func(t): return t.alive).size()],
+		"nearest enemy delta %.1f" % nearest_delta,
+		"shots %d  enemies %d  settlers alive %d" % [world.shots.size(), world.enemies.size(),
+				world.settlers.filter(func(s): return s.is_alive()).size()],
 	])

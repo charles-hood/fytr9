@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="WaveRecipe" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/wave_recipe.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+wave_number = 1
+snatcher_count = 4
+max_concurrent_snatchers = 2
+abduction_cap = 1
+spawn_interval_min = 2.5
+spawn_interval_max = 5.0
+spawn_min_player_distance = 600.0

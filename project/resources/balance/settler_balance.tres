@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="SettlerBalance" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/settler_balance.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+population = 10
+walk_speed = 25.0
+walk_interval_min = 1.0
+walk_interval_max = 3.0
+ground_offset = 8.0
+fall_gravity = 500.0
+max_fall_speed = 320.0
+safe_fall_distance = 130.0
+catch_radius = 42.0
+carry_offset_y = 26.0
+carry_stack_spacing = 18.0
+drop_band_height = 60.0
+delivered_duration = 2.0

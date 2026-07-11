@@ -120,6 +120,47 @@ pre-alpha tester (Frank). Milestone 2 starts after that verdict; expect
 §4.2 balance values to move in response — Arc Lance closing speed is the
 flagged suspect (see the value-derivation entry above).
 
+## 2026-07-11 — Milestone 2 scope boundaries
+
+Where M2 tasks touch systems that belong to later milestones, the boundary
+is drawn as follows (per §0.9 simplest-consistent rule):
+
+- **Snatcher aimed shots** (§5: every 2.0 s) are deferred to Milestone 3 —
+  there is no player death until lives/respawn exist, so enemy fire would be
+  dead code. The Snatcher's abduction behavior is complete.
+- **Ravager spawn on escape** is deferred to Milestone 4 (its roster
+  milestone). The Settler MUTATED transition, population loss, and the
+  escaped-carrier despawn are fully implemented and tested; M4 wires the
+  transformed enemy into the escape event.
+- **All Settlers lost ends the M2 run with a game-over overlay.** The real
+  `PLANET_COLLAPSE`/extinction branch (§4.6) is Milestone 4 content and will
+  replace that run-end path.
+- **Run-end is an in-session overlay** (fire = instant retry, esc = title);
+  the full game-over report scene with score tables is Milestone 5.
+
+## 2026-07-11 — Wave-clear gate includes player-carried Settlers
+
+§6.1 blocks wave completion on "unresolved Settler abduction/catch
+transitions." Interpreted to include CARRIED_BY_PLAYER: a wave cannot end
+while a Settler dangles from the craft — the player resolves it by entering
+the drop band. TARGETED, CARRIED_BY_ENEMY, and FALLING block likewise;
+DELIVERED does not.
+
+## 2026-07-11 — Multiple simultaneous player carries allowed
+
+The plan speaks of "a carried Settler" but doesn't forbid catching another
+while carrying (the classic handles multiples). Simplest consistent choice:
+allow it; carried Settlers stack below the craft at a fixed spacing. Revisit
+only if playtesting shows it trivializes rescues.
+
+## 2026-07-11 — Grab and carry offsets must be equal
+
+Found by the integration suite: with grab_offset_y (12) smaller than
+carry_offset_y (22), the grab teleported the Settler 10px *down* into the
+terrain, so a released Settler "landed" instantly and could never be caught.
+Both offsets are now 22 and the balance class documents that they must
+match — the Settler is lifted exactly from where it stood.
+
 ## 2026-07-10 — Placeholder pause behavior
 
 Until the real pause flow lands (Milestone 3), `pause` in the placeholder game

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="SnatcherBalance" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/snatcher_balance.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+descend_speed = 80.0
+ascend_speed = 60.0
+patrol_speed = 80.0
+patrol_y_min = 100.0
+patrol_y_max = 200.0
+patrol_turn_min = 1.5
+patrol_turn_max = 4.0
+grab_offset_y = 22.0
+grab_radius = 14.0
+carry_offset_y = 22.0
+escape_y = 60.0
+hit_radius = 16.0

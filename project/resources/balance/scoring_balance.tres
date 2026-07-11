@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ScoringBalance" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/scoring_balance.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+destroy_snatcher = 150
+destroy_ravager = 250
+destroy_mine_layer = 200
+destroy_brood_pod = 500
+destroy_splinter = 75
+destroy_interceptor = 300
+catch_settler = 250
+return_settler = 750
+wave_clear_per_wave = 100
+survivor_per_wave = 100
+perfect_base = 1000
+perfect_per_wave = 100
