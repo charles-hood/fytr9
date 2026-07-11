@@ -6,15 +6,17 @@ Asset-level provenance lives in `ASSET_MANIFEST.csv`.
 
 ## Godot Engine
 
-Exported builds embed the Godot Engine.
+Exported builds embed the Godot Engine — including the pre-alpha Web build
+distributed via GitHub Pages (https://charles-hood.github.io/fytr9/).
 
-- License: MIT — see `LICENSE.godot.txt` (add before first export, Milestone 6)
+- License: MIT — see `LICENSE.godot.txt` (in this directory)
 - Source: https://godotengine.org
 - Version: 4.7.stable.official.5b4e0cb0f
 
 Godot's own third-party components require their notices to accompany
-distributed builds: https://godotengine.org/license — fold the engine's
-COPYRIGHT.txt contents in at Milestone 6 export time.
+distributed builds: https://godotengine.org/license — the full engine
+COPYRIGHT.txt fold-in and audit happens at Milestone 6, before release
+candidates.
 
 ## Fonts
 
