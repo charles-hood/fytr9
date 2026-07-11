@@ -161,6 +161,22 @@ terrain, so a released Settler "landed" instantly and could never be caught.
 Both offsets are now 22 and the balance class documents that they must
 match — the Settler is lifted exactly from where it stood.
 
+## 2026-07-11 — Early web export + GitHub Pages hosting for pre-alpha
+
+A Web export preset (`project/export_presets.cfg`) is committed ahead of
+Milestone 6 so playtesters can run the current build in a browser with zero
+setup. Per the §3 gotcha it is a **single-threaded** export
+(`variant/thread_support=false`) — required on static hosts like GitHub
+Pages, which send no cross-origin-isolation headers. Export templates
+4.7.stable match the pinned editor. The build itself stays out of `main`
+(`build/` is gitignored); it is published on the `gh-pages` branch at
+https://charles-hood.github.io/fytr9/ and re-exported/pushed manually per
+milestone. The raw wasm is ~35 MB (≈10 MB over the wire); the plan's <30 MB
+compressed Web target remains a Milestone 6 acceptance gate, not something
+this pre-alpha build must already meet. M6's full export/audit criteria
+(checksums, notices, platform acceptance) still apply when release
+candidates start.
+
 ## 2026-07-10 — Placeholder pause behavior
 
 Until the real pause flow lands (Milestone 3), `pause` in the placeholder game
