@@ -27,6 +27,16 @@ if grep -q "SCRIPT ERROR" <<<"$test_output"; then
 	echo "test suite: FAILED (script errors during tests — see above)"
 	exit 1
 fi
+# Positive completion: a run that ends without exactly one PASS summary with
+# nonzero counts did not finish normally, whatever its exit code said.
+if [[ "$(grep -c '^PASS: ' <<<"$test_output")" -ne 1 ]]; then
+	echo "test suite: FAILED (no single PASS summary — run did not complete normally)"
+	exit 1
+fi
+if grep -q "^PASS: 0 suites\|, 0 checks," <<<"$test_output"; then
+	echo "test suite: FAILED (PASS with zero suites/checks — discovery broken)"
+	exit 1
+fi
 
 echo
 echo "== boot smoke test =="
@@ -40,6 +50,10 @@ if [[ -n "$boot_output" ]]; then
 fi
 if grep -qE "SCRIPT ERROR|^ERROR" <<<"$boot_output"; then
 	echo "boot smoke: FAILED (errors in boot output)"
+	exit 1
+fi
+if ! grep -q "Godot Engine" <<<"$boot_output"; then
+	echo "boot smoke: FAILED (no engine banner — boot did not actually run)"
 	exit 1
 fi
 echo "boot smoke: OK"

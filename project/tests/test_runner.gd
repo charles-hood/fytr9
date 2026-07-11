@@ -31,7 +31,13 @@ func _run_all() -> void:
 	var all_failures: Array[String] = []
 
 	for dir_path in TEST_DIRS:
-		for script_path in _find_test_scripts(dir_path):
+		var scripts := _find_test_scripts(dir_path)
+		# An unreadable/empty configured directory is a broken harness, not a
+		# green run — never let discovery failure produce PASS: 0 suites.
+		if scripts.is_empty():
+			all_failures.append("%s: no test scripts found (missing or unreadable directory?)"
+					% dir_path)
+		for script_path in scripts:
 			suites += 1
 			var script: GDScript = load(script_path)
 			# A parse error yields a non-null script that can't instantiate;
@@ -59,6 +65,9 @@ func _run_all() -> void:
 			all_failures.append_array(case.failures)
 			print("%s — %d tests, %d checks, %d failures" % [
 					script_path, ran, case.checks, case.failures.size()])
+
+	if suites == 0 or total_checks == 0:
+		all_failures.append("harness: no suites or no checks ran — discovery is broken")
 
 	print("")
 	if all_failures.is_empty():

@@ -91,11 +91,11 @@ func _ready() -> void:
 
 
 ## GameWorld pulls due spawn positions each tick; only ACTIVE waves spawn (§6.1).
-func due_spawns(delta: float, active_enemies: int, player_sim_x: float) -> Array[float]:
+func due_spawns(delta: float, active_snatchers: int, player_sim_x: float) -> Array[float]:
 	if run_over or phase != Phase.ACTIVE:
 		var none: Array[float] = []
 		return none
-	return wave_director.tick(delta, active_enemies, player_sim_x)
+	return wave_director.tick(delta, active_snatchers, player_sim_x)
 
 
 ## Called by GameWorld at the end of every physics tick (explicit pipeline).
@@ -215,11 +215,14 @@ func _on_score_changed(total: int) -> void:
 	if total > high_score:
 		high_score = total
 		_hud.set_high_score(high_score)
-	# §4.4 extra ships: first at 10k, then every 50k; each also grants +1
-	# Pulse Bomb (§4.3). Both cap at 5 including the active ship.
+	# §4.4 extra ships: first at 10k, then every 50k. The §4.3 bomb rides
+	# only on an actually awarded ship — a threshold crossed at the 5-ship
+	# cap grants nothing and announces nothing (M3 review finding).
 	while total >= _next_extra_ship:
 		_next_extra_ship += scoring_balance.extra_ship_interval
-		lives = mini(lives + 1, scoring_balance.max_ships)
+		if lives >= scoring_balance.max_ships:
+			continue
+		lives += 1
 		bombs = mini(bombs + 1, scoring_balance.max_bombs)
 		_hud.set_lives(lives)
 		_hud.set_bombs(bombs)

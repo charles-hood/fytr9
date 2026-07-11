@@ -203,6 +203,12 @@ func test_extra_ship_thresholds_and_caps() -> void:
 	assert_eq(run.bombs, 5, "bombs capped at 5 (§4.3)")
 	run._on_score_changed(160000)
 	assert_eq(run.lives, 5, "cap includes the active ship — never above 5")
+	# A threshold crossed at the ship cap awards nothing at all: the §4.3
+	# bomb rides only on an actually awarded ship (M3 review finding).
+	run.bombs = 2
+	run._on_score_changed(210000)
+	assert_eq(run.lives, 5, "still capped")
+	assert_eq(run.bombs, 2, "no consolation bomb when the ship award is blocked (§4.3/§4.4)")
 	_free_session(session)
 
 

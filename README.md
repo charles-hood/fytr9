@@ -148,12 +148,14 @@ godot --headless --path project --script res://tests/test_runner.gd   # tests on
 godot --headless --path project --quit-after 3                        # boot smoke
 ```
 
-Current suite: 19 suites, 1450 checks — ring math, terrain continuity, RNG
+Current suite: 20 suites, 2096 checks — ring math, terrain continuity, RNG
 stream isolation, flight envelope, Settler state machine and reservations,
 Snatcher lifecycle and aimed fire, scanner mapping, scoring rules and reward
 thresholds, difficulty presets, high-score tables, Pulse Bomb, hyperspace
-safety, death/respawn/invulnerability, simultaneous-event resolution, and
-full five-wave runs simulated through the real session scene.
+safety (including a saturated-field fallback), encounter-schedule
+determinism against player movement, death/respawn/invulnerability,
+simultaneous-event resolution, and full five-wave runs simulated through
+the real session scene.
 
 ## License
 

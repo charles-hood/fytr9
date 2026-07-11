@@ -237,6 +237,44 @@ simplest-consistent rule):
 - **Difficulty is selected on the title screen** (left/right), stored in
   AppState per §10.2; the pre-M5 title screen shows it inline.
 
+## 2026-07-11 — External M3 code review (Codex): all four findings adopted
+
+An independent Codex review of the M3 slice (report:
+`fytr9-milestone-3-code-review-qa-2026-07-11.md`, repo root, untracked)
+produced 2 medium / 2 low findings; all four were accepted as real defects
+against the plan's own contracts and fixed the same day:
+
+1. **Hyperspace fallback (§4.3, medium):** when all 32 random candidates
+   fail, the destination now comes from a deterministic 60×4 sweep of the
+   whole band taking the maximum-clearance point (no extra RNG), instead of
+   "least-bad random candidate" which could sit inside a hull. Under the §14
+   hostile caps the sweep maximum always clears hull contact; a saturated-
+   field test pins that floor.
+2. **Encounter-schedule determinism (§6.3, medium):** WaveDirector now
+   pre-rolls the entire wave schedule (delays + authored positions) at
+   construction, making encounter RNG consumption a pure function of
+   (run seed, wave number). The old rejection sampling consumed a
+   player-position-dependent number of draws. Spawn safety (§5) became a
+   deterministic RNG-free shift to the safety-radius edge; the concurrency
+   cap defers wall-clock timing but never changes draws or order.
+3. **Reward at ship cap (§4.3/§4.4, low):** a score threshold crossed while
+   at 5 ships now awards nothing — no bomb, no EXTRA SHIP banner. The plan
+   ties the bomb to "whenever an extra ship is awarded"; a blocked ship
+   award is not an award. (If M6 balance wants consolation bombs, that's a
+   deliberate change, not a default.)
+4. **Harness positive completion (low):** the runner fails when a test
+   directory is missing/unreadable or when zero suites/checks ran, and
+   run_checks.sh additionally requires exactly one non-empty `PASS:` summary
+   and an engine banner in the boot stage — a green exit code alone no
+   longer proves a run happened.
+
+The review's M4 watch item (whole-field `enemies.size()` feeding the
+Snatcher-specific concurrency cap) is annotated at the call site and must be
+resolved when the roster diversifies. Review process note: this was the
+open-ended discovery pass; its findings are now part of the acceptance
+surface above, and follow-up review rounds should be scoped to this rubric
+plus regressions rather than re-opened territory.
+
 ## 2026-07-11 — Idle-wave playtest note: measured, and answered with M3 pressure
 
 Frank's pre-alpha report said an idle player's wave can "self-resolve in

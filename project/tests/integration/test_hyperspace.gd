@@ -56,6 +56,37 @@ func test_successful_jumps_land_safely_with_invulnerability() -> void:
 	_free_session(session)
 
 
+func test_saturated_field_fallback_never_lands_in_a_hull() -> void:
+	# Force all 32 random candidates to fail: a 2-row lattice of snatchers
+	# spaced 240px leaves no point in the band with 200px hostile clearance.
+	# The deterministic sweep must still pick the safest point that exists,
+	# and it must clear hull contact (enemy 16 + player 14) by a margin.
+	var session := _spawn_session(9193)
+	var world: Node2D = session.get_node("World")
+	var run: Node = session.get_node("RunController")
+	var player: CharacterBody2D = world.player
+	run.preset = run.preset.duplicate()
+	run.preset.hyperspace_failure_chance = 0.0
+
+	var columns := int(world.ring.width / 240.0)
+	for col in columns:
+		for row_y in [155.0, 395.0]:
+			world.spawn_snatcher(col * 240.0)
+			world.enemies[-1].sim_y = row_y
+
+	for i in 5:
+		run.request_hyperspace()
+		assert_true(player.alive, "jump succeeds even in a saturated field")
+		var clearance := INF
+		for enemy in world.enemies:
+			var dx: float = world.ring.wrapped_delta_x(player.sim_x, enemy.sim_x)
+			var dy: float = enemy.sim_y - player.position.y
+			clearance = minf(clearance, Vector2(dx, dy).length())
+		assert_true(clearance > 30.0 + 5.0,
+				"fallback destination clears hull contact (got %.1f px)" % clearance)
+	_free_session(session)
+
+
 func test_failed_jump_destroys_ship_at_origin_dropping_settler() -> void:
 	var session := _spawn_session(9192)
 	var world: Node2D = session.get_node("World")

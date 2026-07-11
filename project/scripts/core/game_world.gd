@@ -31,6 +31,11 @@ const REBASE_LAPS := 16.0
 ## are defined relative to it (§4.3, §11).
 const VIEWPORT_HALF_WIDTH := 640.0
 
+## Fallback hyperspace sweep resolution (see pick_hyperspace_destination):
+## 64px columns across the ring, 4 altitude rows.
+const HYPERSPACE_SWEEP_COLUMNS := 60
+const HYPERSPACE_SWEEP_ROWS := 4
+
 signal enemy_destroyed(entity_id: int, kind: StringName)
 
 @export var world_balance: Resource  # WorldBalance
@@ -130,6 +135,9 @@ func _physics_process(delta: float) -> void:
 	elif player.tick_dead(delta) and not run.run_over:
 		_respawn_player()
 
+	# All enemies are Snatchers in M3. When the M4 roster shares this array,
+	# count Snatchers specifically — other kinds must not consume the §6.2
+	# Snatcher concurrency cap.
 	for x in run.due_spawns(delta, enemies.size(), player.sim_x):
 		spawn_snatcher(x)
 
@@ -181,21 +189,28 @@ func detonate_pulse_bomb() -> void:
 ## REJECTED while unsafe — below the clearance band above the highest terrain
 ## peak or too close to a hostile — before the failure roll ever happens
 ## (RunController rolls only against the destination this returns). If no
-## candidate clears every hostile, the least-crowded one is used: arriving
-## pressured is acceptable, arriving inside a hull is not.
+## random candidate clears every hostile, a DETERMINISTIC coarse sweep of the
+## whole band (no further RNG) takes the maximum-clearance point — the safest
+## place that exists. Under the §14 hostile caps that point always clears
+## hull contact by a wide margin; the dense-field test pins the floor.
 func pick_hyperspace_destination(rng: RandomNumberGenerator) -> Vector2:
 	var y_min: float = world_balance.min_player_y
 	var y_max: float = terrain.min_surface_y() - player_balance.hyperspace_terrain_clearance
-	var best := Vector2(player.sim_x, player_balance.respawn_y)
-	var best_clearance := -INF
 	for attempt in 32:
 		var candidate := Vector2(rng.randf_range(0.0, ring.width), rng.randf_range(y_min, y_max))
-		var clearance := _hostile_clearance(candidate)
-		if clearance >= player_balance.hyperspace_min_clearance:
+		if _hostile_clearance(candidate) >= player_balance.hyperspace_min_clearance:
 			return candidate
-		if clearance > best_clearance:
-			best_clearance = clearance
-			best = candidate
+	var best := Vector2(player.sim_x, player_balance.respawn_y)
+	var best_clearance := -INF
+	for col in HYPERSPACE_SWEEP_COLUMNS:
+		for row in HYPERSPACE_SWEEP_ROWS:
+			var candidate := Vector2(
+					(col + 0.5) * ring.width / HYPERSPACE_SWEEP_COLUMNS,
+					lerpf(y_min, y_max, (row + 0.5) / HYPERSPACE_SWEEP_ROWS))
+			var clearance := _hostile_clearance(candidate)
+			if clearance > best_clearance:
+				best_clearance = clearance
+				best = candidate
 	return best
 
 
