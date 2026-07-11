@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <!-- Original FYTR9 placeholder icon: neon geometric craft on deep navy. -->
+  <rect width="128" height="128" rx="14" fill="#050A1E"/>
+  <polygon points="24,64 88,42 78,64 88,86" fill="none" stroke="#00FF88" stroke-width="5" stroke-linejoin="round"/>
+  <circle cx="102" cy="64" r="5" fill="#88FFCC"/>
+</svg>

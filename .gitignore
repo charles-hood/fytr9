@@ -1,0 +1,19 @@
+# Godot caches
+project/.godot/
+
+# macOS
+.DS_Store
+
+# Export builds
+build/
+export/
+
+# Reference material from earlier planning rounds (not part of the game repo;
+# fytr9-plan-v4.md is the source of truth)
+claude/
+codex/
+deepseek/
+glm/
+fytr9-plan-unified.md
+fytr9-plan-final.md
+fytr9-plan-v3.md
