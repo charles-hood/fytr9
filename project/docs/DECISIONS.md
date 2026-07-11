@@ -183,13 +183,13 @@ this pre-alpha build must already meet. M6's full export/audit criteria
 (checksums, notices, platform acceptance) still apply when release
 candidates start.
 
-## 2026-07-11 — Player-facing play URL is fytr9.rockofpages.com
+## 2026-07-11 — Play URLs: github.io is the living build, rockofpages is a snapshot
 
-The browser build is now served from https://fytr9.rockofpages.com/ (Charles's
-own server), which is the canonical link in README and anything shared with
-playtesters. The gh-pages branch / github.io URL from the web-export entry
-above also remains live; per-milestone build publishing now needs to reach
-both (gh-pages push, plus whatever sync feeds rockofpages.com).
+https://charles-hood.github.io/fytr9/ (gh-pages) is the living build and the
+canonical README/playtester link, re-exported and pushed per milestone.
+https://fytr9.rockofpages.com/ (Charles's own server) is a deliberate
+point-in-time snapshot tied to a blog post — it is NOT updated per milestone
+and README must not describe it as the current build.
 
 ## 2026-07-10 — Placeholder pause behavior
 

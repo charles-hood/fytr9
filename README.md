@@ -10,7 +10,7 @@ three difficulty presets, and instant retry. The full enemy roster and the
 planet-collapse cycle are next. Built with Godot 4.7 in GDScript, targeting
 Web, Windows, macOS, and Linux.
 
-**▶ [Play it in your browser](https://fytr9.rockofpages.com/)** — no
+**▶ [Play it in your browser](https://charles-hood.github.io/fytr9/)** — no
 install needed (desktop browser + keyboard or gamepad).
 
 The authoritative implementation plan is [`fytr9-plan-v4.md`](fytr9-plan-v4.md).
@@ -44,7 +44,7 @@ The **Milestone 3 complete arcade loop** — a full five-wave run:
 
 ### Quick start
 
-**Easiest:** [play the current build in your browser](https://fytr9.rockofpages.com/).
+**Easiest:** [play the current build in your browser](https://charles-hood.github.io/fytr9/).
 
 To run from source instead:
 
