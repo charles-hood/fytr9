@@ -17,3 +17,7 @@ glm/
 fytr9-plan-unified.md
 fytr9-plan-final.md
 fytr9-plan-v3.md
+
+# External AI code-review reports (working material; adopted findings and
+# dispositions are recorded in project/docs/DECISIONS.md)
+fytr9-*code-review-qa-*.md
