@@ -33,7 +33,25 @@ extends Resource
 @export var camera_lookahead_fraction := 0.22
 @export var camera_lookahead_response := 4.0
 
-## Used from Milestone 3 (lives/respawn); centralized now so no literal
-## sneaks into scripts later (§4.2).
+## Lives/respawn flow (§4.2, §4.4).
 @export var respawn_invulnerability := 1.5
 @export var hyperspace_invulnerability := 0.75
+
+## Ship hull radius for lethal contact checks.
+@export var hit_radius := 14.0
+
+## §4.4: pause before respawn; hostile projectiles inside the safety radius
+## are cleared and enemies inside it are pushed to its edge; the ship
+## respawns in place at respawn_y altitude.
+@export var respawn_delay := 2.0
+@export var respawn_safety_radius := 320.0
+@export var respawn_y := 300.0
+
+## Pulse Bomb kill window: visible viewport half-width plus this wrapped seam
+## margin (§4.3).
+@export var bomb_seam_margin := 64.0
+
+## Hyperspace (§4.3): a destination must keep this wrapped distance from
+## every hostile and this much clearance above the highest terrain peak.
+@export var hyperspace_min_clearance := 200.0
+@export var hyperspace_terrain_clearance := 60.0

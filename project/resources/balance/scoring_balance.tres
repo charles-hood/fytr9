@@ -16,3 +16,7 @@ wave_clear_per_wave = 100
 survivor_per_wave = 100
 perfect_base = 1000
 perfect_per_wave = 100
+extra_ship_first_score = 10000
+extra_ship_interval = 50000
+max_ships = 5
+max_bombs = 5

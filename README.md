@@ -4,10 +4,11 @@ A fast, single-player panoramic rescue shooter — pilot the experimental
 FYTR-9 craft around a continuously looping neon planet, destroy hostile
 aircraft, and rescue Settlers from abduction before they're carried away.
 
-**Status: pre-alpha.** The core rescue loop is playable — Snatchers abduct
-Settlers, you shoot the carrier, catch the falling Settler, and return it to
-the surface. Lives, bombs, hyperspace, and the full enemy roster are next.
-Built with Godot 4.7 in GDScript, targeting Web, Windows, macOS, and Linux.
+**Status: pre-alpha.** The complete arcade loop is playable — five waves of
+Snatchers that shoot back, lives and respawns, Pulse Bombs, risky hyperspace,
+three difficulty presets, and instant retry. The full enemy roster and the
+planet-collapse cycle are next. Built with Godot 4.7 in GDScript, targeting
+Web, Windows, macOS, and Linux.
 
 **▶ [Play it in your browser](https://fytr9.rockofpages.com/)** — no
 install needed (desktop browser + keyboard or gamepad).
@@ -18,22 +19,28 @@ The authoritative implementation plan is [`fytr9-plan-v4.md`](fytr9-plan-v4.md).
 
 ## What's playable right now
 
-The **Milestone 2 rescue vertical slice**, one full wave of the real game:
+The **Milestone 3 complete arcade loop** — a full five-wave run:
 
 - Ten **Settlers** walk the terrain of a seamless looping world (three
   screens wide — crossing the "seam" is invisible by design).
-- Four **Snatchers** spawn over the wave and hunt the nearest Settler by
-  shortest wrapped route: reserve, descend, grab, ascend. Reach the top and
-  the Settler is gone (mutated — the Ravager it becomes arrives in M4).
-- **Shoot the carrier** and the Settler falls: catch it by flying into it,
-  then carry it down into the safe band above the terrain to deliver it.
-  Short unaided falls are survivable; long drops are lethal.
-- The **scanner** shows the whole ring — every contact, your viewport
-  bracket (seam-aware), abductions, and falls. Off-screen trouble also gets
-  a directional edge arrow pointing the short way around.
-- **Scoring** per the plan: 150 per Snatcher, 250 a catch, 750 a delivery,
-  plus wave-clear, survivor, and perfect-population bonuses.
-- Clear the wave (or lose every Settler) → instant retry with a fresh seed.
+- **Waves 1–5** escalate from 4 to 8 Snatchers, which hunt the nearest
+  Settler by shortest wrapped route — and now **fire aimed shots at you**
+  every two seconds. Terrain and collisions are lethal (Cadet keeps a
+  forgiving terrain rebound).
+- **Lives**: 3 ships on Pilot/Ace, 5 on Cadet; extra ship (+1 bomb) at
+  10,000 points, then every 50,000, capped at 5. Death releases any carried
+  Settler; respawn comes with a cleared safety zone and 1.5 s of grace.
+- **Pulse Bomb** (E / K): wipes every enemy and hostile shot on screen.
+  Run-level stock — dying does not refill it.
+- **Hyperspace** (Q / L): teleports you somewhere safe... usually. 10% of
+  jumps destroy the ship on Pilot, 15% on Ace, never on Cadet.
+- **Rescue loop** unchanged: shoot the carrier, catch the falling Settler,
+  deliver it to the surface. The **scanner** and directional edge arrows
+  cover the whole ring.
+- **Three difficulty presets** (pick with left/right on the title screen)
+  with separate high-score tables, shown on the HUD.
+- Clear wave 5 → SECTOR CLEARED; lose every ship or every Settler → GAME
+  OVER. Either way: instant retry on fire, pause on ESC/P.
 
 ### Quick start
 
@@ -60,23 +67,26 @@ godot --path project
 |---|---|---|
 | Move | WASD or arrows | Left stick or D-pad |
 | Fire (Arc Lance) | Space or J | South button or right trigger |
-| Pulse Bomb *(not yet implemented)* | E or K | West button or left trigger |
-| Hyperspace *(not yet implemented)* | Q or L | North button or right shoulder |
-| Pause / back to title | Escape or P | Start |
+| Pulse Bomb | E or K | West button or left trigger |
+| Hyperspace | Q or L | North button or right shoulder |
+| Pause | Escape or P | Start |
+| Quit to title (while paused) | Q or L | North button or right shoulder |
 | Debug overlay | F3 | — |
 
 ### Pre-alpha playtest notes — what feedback helps most
 
-- **Flight feel**: does thrust, coasting, and the quick brake-and-reverse
-  feel good at speed? (Targets: ~3.2 s to cross a screen, ~0.6 s full
-  reversal.)
+- **Danger**: Snatchers now shoot back and terrain kills. Does Pilot feel
+  fair — deaths readable, respawns safe, invulnerability window enough?
+- **Difficulty spread**: is Cadet genuinely gentle and Ace genuinely mean
+  (enemy speed, bomb stock, hyperspace risk, catch radius)?
+- **Pulse Bomb & hyperspace**: does the bomb feel worth hoarding? Is
+  hyperspace a tempting gamble or a death trap?
+- **Wave arc**: waves 1–5 ramp 4→8 Snatchers with up to 2 simultaneous
+  abductions late. Where does it tip from calm to frantic?
 - **Arc Lance**: does firing while chasing feel punchy or sluggish? (Known
   watch item: shots travel at only 2× ship speed.)
 - **Rescue clarity**: when a Settler is taken off-screen, do the banner,
-  scanner, and edge arrow get you there in time? Is catching a falling
-  Settler readable and fair (catch radius), and is delivering it obvious?
-- **Pacing**: one wave = 4 Snatchers, max 1 abduction at a time. Too calm,
-  too frantic?
+  scanner, and edge arrow get you there in time?
 - **Seam**: fly one direction for ~10 s — you'll lap the world. Any visible
   pop, stutter, or double-hit anywhere?
 - **Camera**: the view leads your movement direction — too much, too little?
@@ -91,21 +101,22 @@ hard-coded.
 | 0 — Repository & foundation | Project, input, tests, docs, licenses | ✅ done |
 | 1 — Flight laboratory | Ring world, flight model, Arc Lance, terrain, camera, debug | ✅ done (feel check in progress) |
 | 2 — Rescue vertical slice | Settlers, Snatcher, catch/carry/return, scanner, first wave | ✅ done |
-| 3 — Complete arcade loop | Lives, Pulse Bomb, hyperspace, waves 1–5, difficulty presets | ⬅ next |
-| 4 — Full roster & planet cycle | Ravager, Mine Layer, Brood Pod, Splinter, Interceptor, planet collapse/restoration | pending |
+| 3 — Complete arcade loop | Lives, Pulse Bomb, hyperspace, waves 1–5, difficulty presets | ✅ done |
+| 4 — Full roster & planet cycle | Ravager, Mine Layer, Brood Pod, Splinter, Interceptor, planet collapse/restoration | ⬅ next |
 | 5 — Presentation, saves, accessibility | Menus, saves, options, art & SFX pass | pending |
 | 6 — Balance & release candidate | Playtests, tuning, exports, license audit | pending |
 
-### Next up (Milestone 3 — complete arcade loop)
+### Next up (Milestone 4 — full enemy roster and planet cycle)
 
-1. Lives, player death (terrain and enemies become lethal), respawn safety
-   and invulnerability; Snatcher aimed shots arrive with them.
-2. Pulse Bomb (run-level resource — not refilled on death).
-3. Hyperspace with the per-difficulty failure roll.
-4. Waves 1–5 from the plan's recipe table, extra-life thresholds,
-   high-score foundation, and the three difficulty presets.
-5. Wave transitions hardened against simultaneous events (death + clear +
-   bomb + falling Settler in the same tick).
+1. Ravager (spawns when a Snatcher escapes — the mutation is already
+   tracked), Mine Layer, Brood Pod, Splinter, and the Interceptor
+   anti-stall.
+2. Finite encounter budgets and the post-wave-5 endless difficulty curve
+   (`encounter_rng` deterministic seeding is already in place).
+3. `PLANET_COLLAPSE` and the five-extinction-wave cycle per plan §4.6,
+   replacing the M3 all-Settlers-lost game over.
+4. Performance caps and profile-driven pooling only if measurements demand
+   it.
 
 ## Engine (pinned)
 
@@ -137,10 +148,12 @@ godot --headless --path project --script res://tests/test_runner.gd   # tests on
 godot --headless --path project --quit-after 3                        # boot smoke
 ```
 
-Current suite: 13 suites, 1071 checks — ring math, terrain continuity, RNG
+Current suite: 19 suites, 1450 checks — ring math, terrain continuity, RNG
 stream isolation, flight envelope, Settler state machine and reservations,
-Snatcher lifecycle, scanner mapping, scoring rules, and end-to-end rescue
-simulation through the real session scene.
+Snatcher lifecycle and aimed fire, scanner mapping, scoring rules and reward
+thresholds, difficulty presets, high-score tables, Pulse Bomb, hyperspace
+safety, death/respawn/invulnerability, simultaneous-event resolution, and
+full five-wave runs simulated through the real session scene.
 
 ## License
 

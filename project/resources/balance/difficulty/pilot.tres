@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="DifficultyPreset" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/difficulty_preset.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"pilot"
+display_name = "PILOT"
+lives = 3
+bombs = 3
+enemy_speed_scale = 1.0
+hyperspace_failure_chance = 0.1
+catch_radius_scale = 1.0
+lethal_terrain = true
+score_table = &"canonical"

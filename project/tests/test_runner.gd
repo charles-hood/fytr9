@@ -34,8 +34,11 @@ func _run_all() -> void:
 		for script_path in _find_test_scripts(dir_path):
 			suites += 1
 			var script: GDScript = load(script_path)
-			if script == null:
-				all_failures.append("%s: failed to load" % script_path)
+			# A parse error yields a non-null script that can't instantiate;
+			# calling new() on it would hard-abort this coroutine and hang
+			# the run with quit() unreached (see docs/DECISIONS.md).
+			if script == null or not script.can_instantiate():
+				all_failures.append("%s: failed to load/parse" % script_path)
 				continue
 			var case = script.new()
 			case.scene_tree = self

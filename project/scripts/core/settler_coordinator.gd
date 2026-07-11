@@ -141,6 +141,16 @@ func carrier_escaped(owner: Object) -> void:
 	settler_mutated.emit(settler)
 
 
+## The player's craft was destroyed while carrying (§4.4 step 3, mirroring
+## the §4.3 failed-hyperspace rule): every carried Settler is released into
+## FALLING at the craft's position.
+func release_player_carried() -> void:
+	for settler in settlers:
+		if settler.state == Settler.State.CARRIED_BY_PLAYER:
+			settler.apply_state(Settler.State.FALLING)
+			settler_falling.emit(settler)
+
+
 ## The player caught a falling Settler by overlap (§4.5).
 func catch_settler(settler: Node2D) -> void:
 	if settler.state != Settler.State.FALLING:

@@ -20,6 +20,13 @@ extends Resource
 @export var perfect_base := 1000
 @export var perfect_per_wave := 100
 
+## Extra ships (§4.4): first at 10,000, then every 50,000. Each extra ship
+## also awards +1 Pulse Bomb (§4.3). Caps include the active ship.
+@export var extra_ship_first_score := 10000
+@export var extra_ship_interval := 50000
+@export var max_ships := 5
+@export var max_bombs := 5
+
 
 func enemy_value(kind: StringName) -> int:
 	match kind:

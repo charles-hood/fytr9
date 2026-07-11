@@ -1,0 +1,80 @@
+[gd_resource type="Resource" script_class="WaveTable" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/wave_table.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/core/wave_recipe.gd" id="2"]
+
+[sub_resource type="Resource" id="wave1"]
+script = ExtResource("2")
+wave_number = 1
+snatcher_count = 4
+max_concurrent_snatchers = 2
+abduction_cap = 1
+spawn_interval_min = 2.5
+spawn_interval_max = 5.0
+spawn_min_player_distance = 600.0
+mine_layer_count = 0
+brood_pod_count = 0
+ravagers_at_start = 0
+interceptor_timer_sec = 45.0
+
+[sub_resource type="Resource" id="wave2"]
+script = ExtResource("2")
+wave_number = 2
+snatcher_count = 5
+max_concurrent_snatchers = 2
+abduction_cap = 1
+spawn_interval_min = 2.5
+spawn_interval_max = 5.0
+spawn_min_player_distance = 600.0
+mine_layer_count = 1
+brood_pod_count = 0
+ravagers_at_start = 0
+interceptor_timer_sec = 40.0
+
+[sub_resource type="Resource" id="wave3"]
+script = ExtResource("2")
+wave_number = 3
+snatcher_count = 6
+max_concurrent_snatchers = 3
+abduction_cap = 1
+spawn_interval_min = 2.0
+spawn_interval_max = 4.0
+spawn_min_player_distance = 600.0
+mine_layer_count = 1
+brood_pod_count = 1
+ravagers_at_start = 0
+interceptor_timer_sec = 35.0
+
+[sub_resource type="Resource" id="wave4"]
+script = ExtResource("2")
+wave_number = 4
+snatcher_count = 7
+max_concurrent_snatchers = 3
+abduction_cap = 2
+spawn_interval_min = 2.0
+spawn_interval_max = 4.0
+spawn_min_player_distance = 600.0
+mine_layer_count = 2
+brood_pod_count = 1
+ravagers_at_start = 0
+interceptor_timer_sec = 32.0
+
+[sub_resource type="Resource" id="wave5"]
+script = ExtResource("2")
+wave_number = 5
+snatcher_count = 8
+max_concurrent_snatchers = 3
+abduction_cap = 2
+spawn_interval_min = 1.5
+spawn_interval_max = 3.5
+spawn_min_player_distance = 600.0
+mine_layer_count = 2
+brood_pod_count = 2
+ravagers_at_start = 0
+interceptor_timer_sec = 30.0
+
+[resource]
+script = ExtResource("1")
+waves = Array[Resource]([SubResource("wave1"), SubResource("wave2"), SubResource("wave3"), SubResource("wave4"), SubResource("wave5")])
+pre_wave_duration = 2.5
+wave_complete_duration = 2.0

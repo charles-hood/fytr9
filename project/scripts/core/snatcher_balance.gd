@@ -1,8 +1,14 @@
 ## Snatcher tuning (plan §5 roster row). Edit the .tres, not code.
-## Aimed shots (every 2.0 s) are deferred to Milestone 3 with player death —
-## see docs/DECISIONS.md.
 class_name SnatcherBalance
 extends Resource
+
+## Aimed fire (§5: aimed shot every 2.0 s; arrived in M3 with player death).
+## Snatchers hold fire beyond fire_range so distant off-screen patrols don't
+## flood the ring with projectiles.
+@export var fire_interval := 2.0
+@export var fire_range := 900.0
+@export var shot_speed := 240.0
+@export var shot_lifetime := 3.5
 
 ## §5: descend 80, ascend 60.
 @export var descend_speed := 80.0

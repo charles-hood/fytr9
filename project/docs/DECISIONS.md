@@ -110,6 +110,12 @@ only after the first processed frame, (b) fails any test method that
 records zero assertions, and (c) run_checks.sh fails on any SCRIPT ERROR in
 test output even if the summary says PASS.
 
+*(Added 2026-07-11)* (d) A test script with a **parse error** loads as a
+non-null GDScript whose `new()` hard-aborts the runner's coroutine — the
+run then idles forever with `quit()` unreached (observed as a ~30-minute
+hang at ~0% CPU). The runner now rejects scripts where
+`can_instantiate()` is false instead of calling `new()`.
+
 ## 2026-07-10 — Published publicly; external pre-alpha feel check
 
 The repo is public at https://github.com/charles-hood/fytr9 (Charles's call:
@@ -189,4 +195,58 @@ both (gh-pages push, plus whatever sync feeds rockofpages.com).
 
 Until the real pause flow lands (Milestone 3), `pause` in the placeholder game
 session returns to the title screen so the boot → title → session → title loop
-is walkable end to end.
+is walkable end to end. *(Superseded 2026-07-11: M3 ships a real pause
+overlay — see the M3 scope entry below.)*
+
+## 2026-07-11 — Milestone 3 scope boundaries and decisions
+
+Where M3 tasks left details unspecified, the boundaries (per §0.9
+simplest-consistent rule):
+
+- **The M3 run ends after wave 5** with a "SECTOR CLEARED" report. The §6.2
+  post-5 formulas and endless progression arrive in Milestone 4 with the
+  finite-encounter-budget work. All-Settlers-lost still ends the run with a
+  game-over overlay (the §4.6 PLANET_COLLAPSE branch is M4, as recorded in
+  the M2 entry).
+- **Waves 1–5 spawn Snatchers only.** The §6.2 Mine Layer / Brood Pod /
+  Ravager columns and the Interceptor timer are authored in
+  `resources/encounters/waves_01_05.tres` now but spawn from M4, when those
+  enemies exist.
+- **Death releases carried Settlers into FALLING at the craft's position** —
+  "safely resolve any carried Settler" (§4.4 step 3) is interpreted to mirror
+  the explicit failed-hyperspace rule (§4.3). A low-altitude death therefore
+  usually returns the Settler safely; a high one risks LOST. No free rescue.
+- **Respawn is in place** (same ring x, fixed safe altitude), after a 2 s
+  pause, with the §4.4 clearing: hostile projectiles inside the 320 px safety
+  radius are removed and enemies inside it are pushed to its edge.
+- **Ramming kills both.** Player–enemy contact destroys the enemy (scoring
+  normally) and the ship. The plan is silent; this matches the classic and
+  avoids a free bump-through.
+- **Snatcher shot speed 240 px/s, range-gated at 900 px** (§5 gives cadence
+  2.0 s but no speed; 240 is dodgeable at player speed 400). Off-screen
+  snatchers beyond the range gate hold fire so the ring isn't flooded.
+- **Catch forgiveness** (§6.4 Large/Standard/Tight) is a catch-radius
+  multiplier: 1.35 / 1.0 / 0.8.
+- **High-score foundation is in-memory** in SaveService (top ten per §6.4
+  table: assisted/canonical/ace), shown on the HUD and the run report. Disk
+  persistence with the full corruption/migration behavior is Milestone 5, as
+  planned.
+- **Pause is a real overlay now** (ESC/P toggles, tree-paused; Q/L quits to
+  title from it). The M5 menu pass replaces the placeholder visuals. The
+  gamepad-disconnect auto-pause arrives with the M5 options work (§8).
+- **Difficulty is selected on the title screen** (left/right), stored in
+  AppState per §10.2; the pre-M5 title screen shows it inline.
+
+## 2026-07-11 — Idle-wave playtest note: measured, and answered with M3 pressure
+
+Frank's pre-alpha report said an idle player's wave can "self-resolve in
+under ten seconds." Reproduced headlessly against the M2 build across eight
+seeds: an idle wave actually ends in **55–60 s** (all four Snatchers escape
+serially under the abduction cap), but the substance stands — it ended in
+"WAVE COMPLETE" with the clear bonus and 6/10 survivor bonuses for doing
+nothing. The M3 systems close this: Snatchers now fire aimed shots, terrain
+and contact are lethal, and lives are finite, so an idle Pilot run ends in
+game over within seconds-to-a-minute instead of quietly banking wave bonuses
+(regression-tested in `test_snatcher_fire.gd`). Waves cleared by escapes
+remain a legal §6.1 exit — the M4 Interceptor is the designed anti-stall for
+players who fight but won't finish.

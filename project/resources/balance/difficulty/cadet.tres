@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="DifficultyPreset" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/difficulty_preset.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"cadet"
+display_name = "CADET"
+lives = 5
+bombs = 5
+enemy_speed_scale = 0.8
+hyperspace_failure_chance = 0.0
+catch_radius_scale = 1.35
+lethal_terrain = false
+score_table = &"assisted"

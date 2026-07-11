@@ -4,6 +4,10 @@
 
 [resource]
 script = ExtResource("1")
+fire_interval = 2.0
+fire_range = 900.0
+shot_speed = 240.0
+shot_lifetime = 3.5
 descend_speed = 80.0
 ascend_speed = 60.0
 patrol_speed = 80.0
