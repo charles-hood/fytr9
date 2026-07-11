@@ -110,6 +110,16 @@ only after the first processed frame, (b) fails any test method that
 records zero assertions, and (c) run_checks.sh fails on any SCRIPT ERROR in
 test output even if the summary says PASS.
 
+## 2026-07-10 — Published publicly; external pre-alpha feel check
+
+The repo is public at https://github.com/charles-hood/fytr9 (Charles's call:
+easiest for playtesters, code is MIT anyway). The Milestone 1 exit criterion
+"flying, reversing, shooting, and crossing the seam remain enjoyable for five
+minutes" is delegated to human playtesting: Charles plus one external
+pre-alpha tester (Frank). Milestone 2 starts after that verdict; expect
+§4.2 balance values to move in response — Arc Lance closing speed is the
+flagged suspect (see the value-derivation entry above).
+
 ## 2026-07-10 — Placeholder pause behavior
 
 Until the real pause flow lands (Milestone 3), `pause` in the placeholder game

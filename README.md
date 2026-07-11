@@ -22,14 +22,18 @@ crossing the "seam" is invisible by design.
 
 ### Quick start
 
-1. Install **Godot 4.7 stable** (macOS: `brew install --cask godot`).
-2. From the repo root:
+1. Install **Godot 4.7 stable** (macOS: `brew install --cask godot`; other
+   platforms: [godotengine.org](https://godotengine.org/download/)).
+2. Clone and run:
 
 ```bash
+git clone https://github.com/charles-hood/fytr9.git
+cd fytr9
 godot --path project
 ```
 
-3. On the title screen, press **fire** to launch the flight lab.
+3. On the title screen, press **fire** (Space / J / gamepad south) to launch
+   the flight lab.
 
 ### Controls (defaults, keyboard or gamepad)
 
