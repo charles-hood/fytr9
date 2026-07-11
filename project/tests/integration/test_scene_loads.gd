@@ -6,10 +6,14 @@ const SCENES: Array[String] = [
 	"res://scenes/boot/boot.tscn",
 	"res://scenes/menus/title_screen.tscn",
 	"res://scenes/game/game_session.tscn",
+	"res://scenes/game/world.tscn",
+	"res://scenes/game/terrain.tscn",
 	"res://scenes/game/hud.tscn",
 	"res://scenes/game/scanner.tscn",
+	"res://scenes/actors/player.tscn",
 	"res://scenes/actors/settler.tscn",
 	"res://scenes/actors/enemies/snatcher.tscn",
+	"res://scenes/actors/projectiles/player_shot.tscn",
 	"res://scenes/actors/projectiles/enemy_shot.tscn",
 ]
 

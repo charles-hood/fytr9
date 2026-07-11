@@ -162,16 +162,22 @@ func _physics_process(delta: float) -> void:
 	_tick_enemy_shots(delta)
 	_handle_rescue()
 	run.registry.rebuild(player, enemies, settlers)
+	# Rebase BEFORE placement and the camera update, so a rebase tick renders
+	# entities relative to the shifted anchor — placing first left every
+	# entity a full world width off-screen for one frame.
+	_maybe_rebase()
 	_place_entities()
 	camera.tick(delta, player)
-	_maybe_rebase()
 	run.post_tick(delta)
 
 
 ## §4.3 Pulse Bomb: kills enemies and hostile projectiles in the visible
 ## viewport plus a wrapped seam margin. Settlers are unharmed — a carried
 ## Settler drops because its carrier dies (the §4.5 falling rule), not from
-## bomb damage.
+## bomb damage. Only the wrapped x window is tested: the viewport is the
+## full 720px logical height and every hostile lives inside the playable
+## band within it, so a y check would be dead code — revisit only if an M4+
+## enemy can ever exist outside the vertical viewport.
 func detonate_pulse_bomb() -> void:
 	var cam_x := camera_sim_x()
 	var reach: float = VIEWPORT_HALF_WIDTH + player_balance.bomb_seam_margin

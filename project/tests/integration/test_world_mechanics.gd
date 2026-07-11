@@ -83,4 +83,16 @@ func test_rebase_keeps_camera_player_relation() -> void:
 	assert_true(absf(world.player.position.x) < W, "anchor rebased near origin")
 	assert_almost_eq(world.camera.position.x - world.player.position.x, relative, 0.001,
 			"camera shifted by the same amount — rebase is invisible")
+
+	# A full tick that rebases must also render entities relative to the new
+	# anchor — placing before the rebase left everything a world width away
+	# for one frame (M3 GLM review, nit 3).
+	world.spawn_snatcher(world.ring.normalize_x(world.player.sim_x + 300.0))
+	world.player.position.x = 17.0 * W + 123.0
+	world.player.sim_x = world.ring.normalize_x(world.player.position.x)
+	world._physics_process(DT)
+	assert_true(absf(world.player.position.x) < W, "tick performed the rebase")
+	for enemy in world.enemies:
+		assert_true(absf(enemy.position.x - world.player.position.x) <= W / 2.0 + 1.0,
+				"entities placed against the rebased anchor in the same tick")
 	_free_session(pair[0])

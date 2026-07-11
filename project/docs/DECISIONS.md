@@ -275,6 +275,41 @@ open-ended discovery pass; its findings are now part of the acceptance
 surface above, and follow-up review rounds should be scoped to this rubric
 plus regressions rather than re-opened territory.
 
+## 2026-07-11 — External M3 review round 2 (GLM): triage and review freeze
+
+A second independent review (report: `fytr9-code-review-qa-2026-07-11.md`,
+repo root, untracked) found 0 blockers, 2 should-fix, 4 nits, 3 test gaps.
+Disposition:
+
+- **Fixed — scanner/HUD overlap (should-fix):** the high-score and
+  difficulty labels sat entirely under the scanner's 85%-opaque rectangle;
+  both moved to the right column under the population readout.
+- **Documented, not coded — Pulse Bomb y-check (should-fix):** the viewport
+  is the full 720px logical height and every hostile lives inside the
+  playable band within it, so an x-only window IS "the visible viewport";
+  a y check would be dead code. Comment added at the detonation site;
+  revisit only if an M4+ enemy can exist outside the vertical viewport.
+- **Fixed — rebase one-frame glitch (mis-tiered as nit; real rendering
+  bug):** `_maybe_rebase()` now runs before `_place_entities()` and the
+  camera update, so a rebase tick renders entities against the shifted
+  anchor instead of a world width off-screen; the rebase test now asserts
+  entity placement through a full tick.
+- **Removed — dead `target_dummy` scene/script** (M1 scaffolding,
+  unreferenced since M2).
+- **Skipped — duplicate edge arrows:** identical warnings on the same side
+  overlap pixel-for-pixel, so there is no visible defect to fix.
+- **Deferred to M4 (already annotated) — whole-field count vs the Snatcher
+  concurrency cap.**
+- **Test gaps closed:** multiple simultaneous carries (stacking + release
+  on death), catch-radius difficulty scaling applied in the catch check,
+  and standalone instantiation of the remaining scenes.
+
+**Review freeze:** this was the second open-ended discovery pass (after the
+Codex round). Per the discovery→closure rule, the rubric is now frozen:
+subsequent review rounds check the plan contracts + both review reports'
+finding classes + regressions reachable from changes — new territory is out
+of scope, and review of a change stops after two clean passes.
+
 ## 2026-07-11 — Idle-wave playtest note: measured, and answered with M3 pressure
 
 Frank's pre-alpha report said an idle player's wave can "self-resolve in

@@ -212,6 +212,65 @@ func test_extra_ship_thresholds_and_caps() -> void:
 	_free_session(session)
 
 
+func test_multiple_carried_settlers_stack_and_release_on_death() -> void:
+	# DECISIONS 2026-07-11: multiple simultaneous carries are allowed and
+	# stack below the craft; §4.4 death releases every one of them.
+	var session := _spawn_session(786)
+	var world: Node2D = session.get_node("World")
+	var run: Node = session.get_node("RunController")
+	var player: CharacterBody2D = world.player
+	player.position.y = 200.0  # well above the drop band — no auto-delivery
+
+	var first: Node2D = world.settlers[0]
+	var second: Node2D = world.settlers[1]
+	first.apply_state(SettlerScript.State.CARRIED_BY_PLAYER)
+	second.apply_state(SettlerScript.State.CARRIED_BY_PLAYER)
+	_step(world, 1)
+	var offset: float = world.settler_balance.carry_offset_y
+	var spacing: float = world.settler_balance.carry_stack_spacing
+	assert_almost_eq(first.sim_x, player.sim_x, 0.001, "first carried settler tracks the craft")
+	assert_almost_eq(second.sim_x, player.sim_x, 0.001, "second carried settler tracks the craft")
+	assert_almost_eq(minf(first.sim_y, second.sim_y), player.position.y + offset, 0.001,
+			"one settler hangs at the carry offset")
+	assert_almost_eq(maxf(first.sim_y, second.sim_y), player.position.y + offset + spacing,
+			0.001, "the other stacks one spacing lower")
+
+	run.report_player_death(&"test")
+	assert_eq(first.state, SettlerScript.State.FALLING, "death releases the first settler")
+	assert_eq(second.state, SettlerScript.State.FALLING, "death releases the second settler")
+	_free_session(session)
+
+
+func test_catch_radius_scales_with_difficulty() -> void:
+	# §6.4 catch forgiveness must be applied in the catch check itself, not
+	# just stored on the preset: Cadet 1.35x catches at a distance Ace 0.8x
+	# must miss.
+	var base: float = 42.0  # settler_balance.catch_radius
+	var cadet := _spawn_session(787, 0)
+	var cadet_world: Node2D = cadet.get_node("World")
+	assert_almost_eq(cadet_world.settler_balance.catch_radius, base, 0.001,
+			"test distances assume the shipped base catch radius")
+	var wide: Node2D = cadet_world.settlers[0]
+	wide.apply_state(SettlerScript.State.FALLING)
+	wide.sim_x = cadet_world.ring.normalize_x(cadet_world.player.sim_x + 50.0)  # 42 < 50 < 56.7
+	wide.sim_y = cadet_world.player.position.y
+	_step(cadet_world, 1)
+	assert_eq(wide.state, SettlerScript.State.CARRIED_BY_PLAYER,
+			"Cadet's Large forgiveness catches beyond the base radius")
+	_free_session(cadet)
+
+	var ace := _spawn_session(788, 2)
+	var ace_world: Node2D = ace.get_node("World")
+	var tight: Node2D = ace_world.settlers[0]
+	tight.apply_state(SettlerScript.State.FALLING)
+	tight.sim_x = ace_world.ring.normalize_x(ace_world.player.sim_x + 40.0)  # 33.6 < 40 < 42
+	tight.sim_y = ace_world.player.position.y
+	_step(ace_world, 2)
+	assert_eq(tight.state, SettlerScript.State.FALLING,
+			"Ace's Tight forgiveness misses inside the base radius")
+	_free_session(ace)
+
+
 func test_terrain_lethal_on_pilot_forgiving_on_cadet() -> void:
 	var pilot := _spawn_session(784, 1)
 	var pilot_world: Node2D = pilot.get_node("World")
