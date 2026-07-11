@@ -9,7 +9,7 @@ Settlers, you shoot the carrier, catch the falling Settler, and return it to
 the surface. Lives, bombs, hyperspace, and the full enemy roster are next.
 Built with Godot 4.7 in GDScript, targeting Web, Windows, macOS, and Linux.
 
-**▶ [Play it in your browser](https://charles-hood.github.io/fytr9/)** — no
+**▶ [Play it in your browser](https://fytr9.rockofpages.com/)** — no
 install needed (desktop browser + keyboard or gamepad).
 
 The authoritative implementation plan is [`fytr9-plan-v4.md`](fytr9-plan-v4.md).
@@ -37,7 +37,7 @@ The **Milestone 2 rescue vertical slice**, one full wave of the real game:
 
 ### Quick start
 
-**Easiest:** [play the current build in your browser](https://charles-hood.github.io/fytr9/).
+**Easiest:** [play the current build in your browser](https://fytr9.rockofpages.com/).
 
 To run from source instead:
 
